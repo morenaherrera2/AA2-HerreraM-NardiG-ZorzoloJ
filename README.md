@@ -111,20 +111,19 @@ imágenes/
 
 ### Ejercicio 1 y 3 - Predicción del Rendimiento Académico y Clasificación de Escenas Naturales
 1. Acceder a los archivos **Problema 1-TP1 AA2.ipynb** y **Problema 3-TP1 AA2.ipynb** en Google Colab.
-2. Subir los datasets correspondientes al entorno de Google Colab.
-3. Ejecutar las celdas en orden para realizar el análisis, entrenamiento del modelo y evaluación.
-4. Las visualizaciones y resultados de las métricas de desempeño se generarán automáticamente.
+2. Ejecutar las celdas en orden para realizar la carga de datasets, análisis y preprocesamiento, entrenamiento del modelo y evaluación.
+3. Las visualizaciones y resultados de las métricas de desempeño se generarán automáticamente.
 
 ### Ejercicio 2 - Clasificación de Gestos con MediaPipe
 1. Para grabar el dataset de gestos:
-   - Ejecuta el script **record-dataset.py** para capturar imágenes de la cámara y guardar las coordenadas de los landmarks.
+   - Ejecutar el script **record-dataset.py** para capturar imágenes con la cámara y guardar las coordenadas de los landmarks.
    - Las coordenadas se guardarán en archivos `.npy` (por ejemplo, `rps_dataset.npy` y `rps_labels.npy`).
 2. Para entrenar el modelo:
-   - Ejecuta el script **train-gesture-classifier.py** para entrenar el modelo con los datos grabados.
+   - Ejecutar el script **train-gesture-classifier.py** para entrenar el modelo con los datos grabados.
    - El modelo entrenado se guardará en un archivo `.h5` (por ejemplo, `rps_model.h5`).
 3. Para probar el sistema:
-   - Ejecuta el script **rock-paper-scissors.py** para realizar la clasificación de gestos en tiempo real.
-   - El modelo predecirá y mostrará el gesto de la mano (piedra, papel o tijeras) en pantalla.
+   - Ejecutar el script **rock-paper-scissors.py** para realizar la clasificación de gestos en tiempo real.
+   - El modelo va a predecir y mostrar el gesto de la mano (piedra, papel o tijeras) en pantalla.
 
 ## 📚 Requisitos
 
@@ -137,5 +136,18 @@ imágenes/
 
 Instalación de dependencias:
 
-```bash
+```
 pip install tensorflow mediapipe numpy matplotlib opencv-python
+```
+
+Nota: Si se prefiere, se puede crear un entorno virtual e instalar las librerías necesarias utilizando el archivo **requirements.txt**
+```
+1. Crear el entorno virtual:
+python -m venv entorno
+
+2. Activar el entorno virtual:
+.\entorno\Scripts\activate
+
+3. Instalar dependencias:
+pip install -r requirements.txt
+```
