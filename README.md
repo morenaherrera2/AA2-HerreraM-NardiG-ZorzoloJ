@@ -34,7 +34,7 @@ Contenido entregado:
 
 Ubicación:
 
-📄 AA2 - TP1.ipynb (Colab Notebook)
+📄 Problema 1-TP1 AA2.ipynb (Colab Notebook)
 
 ## ✋ Problema 2: Clasificación de Gestos con MediaPipe
 Descripción:
@@ -89,7 +89,7 @@ Contenido entregado:
 
 Ubicación:
 
-📄 AA2 - TP1.ipynb (Colab Notebook)
+📄 Problema 3-TP1 AA2.ipynb (Colab Notebook)
 
 ## 📁 Estructura del Repositorio
 
