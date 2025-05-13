@@ -37,41 +37,48 @@ def configurar_camara():
     return cap, hands, mp_hands, mp_drawing
 
 # Función para capturar y preprocesar gestos
-def capturar_landmarks(cap, hands, mp_hands, mp_drawing, output_dir):
+def capturar_gestos_nuevos(cap, hands, mp_hands, mp_drawing, output_dir):
     print("Presioná 'c' para capturar una imagen (e para salir)")
-    landmarks_list = []
-    file_names = []
+    landmarks_list = []  # Para los landmarks capturados
+    nombres_img = []  # Para los nombres de los archivos de las imágenes
 
     while cap.isOpened():
         ret, frame = cap.read()
         if not ret:
             break
 
+        # Volteamos el frame horizontalmente para simular un espejo
         frame = cv2.flip(frame, 1)
-        rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        results = hands.process(rgb_frame)
 
-        if results.multi_hand_landmarks:
-            for hand_landmarks in results.multi_hand_landmarks:
+        # Convertimos a RGB para la detección de manos
+        rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
+        # Procesamos el frame para detectar las manos
+        resultado = hands.process(rgb_frame)
+
+        # Dibujamos las manos en la pantalla
+        if resultado.multi_hand_landmarks:
+            for hand_landmarks in resultado.multi_hand_landmarks:
                 mp_drawing.draw_landmarks(frame, hand_landmarks, mp_hands.HAND_CONNECTIONS)
 
         cv2.imshow('Capturar Landmarks', frame)
-
         key = cv2.waitKey(1) & 0xFF
-        if key == ord('e'):
+
+        if key == ord('e'): # Para salir del bucle
             break
-        elif key == ord('c'):
-            if results.multi_hand_landmarks:
-                hand_landmarks = results.multi_hand_landmarks[0]
-                landmarks = [(lm.x, lm.y) for lm in hand_landmarks.landmark]
-                flat_landmarks = np.array(landmarks).flatten()
+        elif key == ord('c'): # Para capturar los landmarks 
+            # Si se detectó la mano, extraemos los landmarks del primer conjunto de manos detectadas
+            if resultado.multi_hand_landmarks:
+                hand_landmarks = resultado.multi_hand_landmarks[0]
+                landmarks = [(lm.x, lm.y) for lm in hand_landmarks.landmark] # Obtenemos las coordenadas
+                flat_landmarks = np.array(landmarks).flatten() # Las convertimos a un array plano
                 landmarks_list.append(flat_landmarks)
 
-                # Guardar imagen
+                # Guardamos la imagen capturada
                 img_name = f"imagen_{len(landmarks_list)}.jpg"
                 img_path = os.path.join(output_dir, img_name)
                 cv2.imwrite(img_path, frame)
-                file_names.append(img_name)
+                nombres_img.append(img_name)
                 print(f"Imagen guardada como {img_name}")
 
         time.sleep(0.1)
@@ -79,54 +86,67 @@ def capturar_landmarks(cap, hands, mp_hands, mp_drawing, output_dir):
     cap.release()
     cv2.destroyAllWindows()
 
-    # Guardar todos los landmarks en un único archivo npy
+    # Guardar los landmarks capturados en un archivo .npy
     landmarks_array_prueba = np.array(landmarks_list)
     landmarks_path = os.path.join(output_dir, "landmarks_prueba.npy")
     np.save(landmarks_path, landmarks_array_prueba)
-    return landmarks_array_prueba, np.array(file_names)
 
-def mostrar_imagenes(y_pred, file_test, class_names):
-    cols = 5
-    rows = len(y_pred) // cols + (1 if len(y_pred) % cols != 0 else 0)
-    fig, axes = plt.subplots(rows, cols, figsize=(20, rows * 4))
+    # Retornamos los landmarks capturados y nombres de archivos
+    return landmarks_array_prueba, np.array(nombres_img)
+
+# Función para mostrar los gestos con las etiquetas predichas
+def mostrar_imagenes_nuevas(y_pred, file_test, class_names, output_dir):
+    columnas = 5
+    rows = len(y_pred) // columnas + (1 if len(y_pred) % columnas != 0 else 0)
+    fig, axes = plt.subplots(rows, columnas, figsize=(20, rows * 4))
     axes = axes.ravel()
 
     for i in range(len(y_pred)):
         img_name = file_test[i]
-        img_path = os.path.join('imagenes_prueba', img_name)
+        img_path = os.path.join(output_dir, img_name)
 
+        # Verificamos si la imagen existe
         if os.path.exists(img_path):
             img = cv2.imread(img_path)
             img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
             axes[i].imshow(img_rgb)
         else:
-            # Imagen en blanco si no se encuentra la imagen
+            # Mostramos una imagen en blanco si no se encuentra la imagen
             img = np.ones((100, 100, 3), dtype=np.uint8) * 255
             axes[i].imshow(img)
 
+        # Título con la predicción
         predicted_name = class_names[y_pred[i]]
         axes[i].set_title(f"Pred: {predicted_name}")
         axes[i].axis('off')
 
+    # Desactivamos los ejes restantes
     for j in range(len(y_pred), len(axes)):
         axes[j].axis('off')
 
     plt.tight_layout()
     plt.show()
 
-# Función principal actualizada
+# Función principal
 def main():
-    MODEL_PATH = 'modelo_gestos_rps.h5'
-    model = tf.keras.models.load_model(MODEL_PATH)
-    class_names = ['piedra', 'papel', 'tijeras']
+    model_path = 'modelo_gestos_rps.h5'  # Ruta del modelo
+    model = tf.keras.models.load_model(model_path)
+    class_names = ['piedra', 'papel', 'tijeras']  # Clases del modelo
 
-    output_dir = 'imagenes_prueba'
+    output_dir = 'imagenes_prueba' # Destino de las imágenes capturadas
     crear_carpeta_limpia(output_dir)
 
+    # Configuramos la cámara y los módulos de detección de manos
     cap, hands, mp_hands, mp_drawing = configurar_camara()
-    landmarks_array_prueba, file_names = capturar_landmarks(cap, hands, mp_hands, mp_drawing, output_dir)
 
-    # Clasificar los landmarks capturados usando el modelo
+    # Capturamos los gestos y guardarmos los datos
+    landmarks_array_prueba, file_names = capturar_gestos_nuevos(cap, hands, mp_hands, mp_drawing, output_dir)
+
+    # Escalamos los landmarks
+    scaler = MinMaxScaler()
+    landmarks_array_prueba = scaler.fit_transform(landmarks_array_prueba)
+
+    # Realizamos las predicciones sobre los landmarks capturados
     y_pred = []
     for flat_landmarks in landmarks_array_prueba:
         flat_landmarks = flat_landmarks.reshape(1, -1)
@@ -136,7 +156,7 @@ def main():
 
     y_pred = np.array(y_pred)
 
-    # Mostrar imágenes capturadas con predicciones
-    mostrar_imagenes(y_pred, file_names, class_names)
+    # Mostramos las imágenes capturadas con sus predicciones
+    mostrar_imagenes_nuevas(y_pred, file_names, class_names, output_dir)
 
 main()
