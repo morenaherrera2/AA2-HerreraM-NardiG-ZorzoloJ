@@ -93,21 +93,19 @@ Ubicación:
 
 ## 📁 Estructura del Repositorio
 
-Problema 1-TP1 AA2.ipynb # Notebook con la solución del problema 1 - Rendimiento Académico 
+'''
+Problema 1-TP1 AA2.ipynb  # Notebook con la solución del problema 1 - Rendimiento Académico 
 Problema 3-TP1 AA2.ipynb  # Notebook con la solución del problema 3 - Clasificación de Escenas Naturales
+
 scripts_python/
-
-record-dataset.py # Script para grabar el dataset de gestos usando MediaPipe.
-
-train-gesture-classifier.py # Script para entrenar el clasificador de gestos.
-
-rock-paper-scissors.py # Script para probar el sistema de clasificación de gestos en tiempo real.
+├── record-dataset.py         # Script para grabar el dataset de gestos usando MediaPipe.
+├── train-gesture-classifier.py # Script para entrenar el clasificador de gestos.
+└── rock-paper-scissors.py    # Script para probar el sistema de clasificación de gestos en tiempo real.
 
 imágenes/
-
-... # Imágenes que muestran el funcionamiento del sistema de clasificación de gestos.
-
-... # Ejemplos de imágenes procesadas en la clasificación de escenas naturales.
+├── ... # Imágenes que muestran el funcionamiento del sistema de clasificación de gestos.
+└── ... # Ejemplos de imágenes procesadas en la clasificación de escenas naturales.
+'''
 
 ## 📝 Instrucciones de Ejecución
 
