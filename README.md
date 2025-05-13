@@ -52,13 +52,19 @@ Objetivo:
 Contenido entregado:
 
 - 3 scripts funcionales en Python.
-- Imágenes que demuestran el funcionamiento del sistema.
+- Imágenes que demuestran el funcionamiento del sistema (`Resultados del problema 2.pdf`).
 - Modelo entrenado (.h5).
 - Código comentado.
 
 Ubicación:
 
 📁 scripts_python
+
+📁 gestos_dataset
+
+📁 imagenes_prueba
+
+📄 Resultados del problema 2.pdf
 
 ## 🌍 Problema 3: Clasificación de Escenas Naturales con CNN
 Descripción:
@@ -102,9 +108,16 @@ scripts_python/
 ├── train-gesture-classifier.py # Script para entrenar el clasificador de gestos.
 └── rock-paper-scissors.py    # Script para probar el sistema de clasificación de gestos en tiempo real.
 
-imágenes/
-├── ... # Imágenes que muestran el funcionamiento del sistema de clasificación de gestos.
-└── ... # Ejemplos de imágenes procesadas en la clasificación de escenas naturales.
+imagenes_prueba/
+
+gestos_dataset/
+Resultados del problema 2.pdf
+modelo_gestos_rps.h5
+nombres_img.npy
+rps_dataset.npy
+rps_labels.npy
+
+requirements.txt          # Archivo para instalar dependencias
 ```
 
 ## 📝 Instrucciones de Ejecución
