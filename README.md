@@ -93,8 +93,8 @@ Ubicación:
 
 ## 📁 Estructura del Repositorio
 
-AA2 - TP1.ipynb # Notebook con la solución de los problemas 1 y 3 (Rendimiento Académico y Clasificación de Escenas Naturales).
-
+Problema 1-TP1 AA2.ipynb # Notebook con la solución del problema 1 - Rendimiento Académico 
+Problema 3-TP1 AA2.ipynb  # Notebook con la solución del problema 3 - Clasificación de Escenas Naturales
 scripts_python/
 
 record-dataset.py # Script para grabar el dataset de gestos usando MediaPipe.
@@ -112,9 +112,9 @@ imágenes/
 ## 📝 Instrucciones de Ejecución
 
 ### Ejercicio 1 y 3 - Predicción del Rendimiento Académico y Clasificación de Escenas Naturales
-1. Accede al archivo **AA2 - TP1.ipynb** en Google Colab.
-2. Sube los datasets correspondientes al entorno de Google Colab.
-3. Ejecuta las celdas en orden para realizar el análisis, entrenamiento del modelo y evaluación.
+1. Acceder a los archivos **Problema 1-TP1 AA2.ipynb** y **Problema 3-TP1 AA2.ipynb** en Google Colab.
+2. Subir los datasets correspondientes al entorno de Google Colab.
+3. Ejecutar las celdas en orden para realizar el análisis, entrenamiento del modelo y evaluación.
 4. Las visualizaciones y resultados de las métricas de desempeño se generarán automáticamente.
 
 ### Ejercicio 2 - Clasificación de Gestos con MediaPipe
