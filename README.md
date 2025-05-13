@@ -110,7 +110,7 @@ imágenes/
 ## 📝 Instrucciones de Ejecución
 
 ### Ejercicio 1 y 3 - Predicción del Rendimiento Académico y Clasificación de Escenas Naturales
-1. Acceder a los archivos **Problema 1-TP1 AA2.ipynb** y **Problema 3-TP1 AA2.ipynb** en Google Colab.
+1. Acceder a los archivos `Problema 1-TP1 AA2.ipynb` y `Problema 3-TP1 AA2.ipynb` en Google Colab.
 2. Ejecutar las celdas en orden para realizar la carga de datasets, análisis y preprocesamiento, entrenamiento del modelo y evaluación.
 3. Las visualizaciones y resultados de las métricas de desempeño se generarán automáticamente.
 
@@ -136,11 +136,7 @@ imágenes/
 
 Instalación de dependencias:
 
-```
-pip install tensorflow mediapipe numpy matplotlib opencv-python
-```
-
-Nota: Si se prefiere, se puede crear un entorno virtual e instalar las librerías necesarias utilizando el archivo **requirements.txt**
+Si se prefiere, se puede crear un entorno virtual e instalar las librerías necesarias:
 ```
 1. Crear el entorno virtual:
 python -m venv entorno
@@ -149,5 +145,9 @@ python -m venv entorno
 .\entorno\Scripts\activate
 
 3. Instalar dependencias:
+a) Utilizando el archivo requirements.txt
 pip install -r requirements.txt
+
+b) Instalando las librerías individualmente
+pip install tensorflow mediapipe numpy matplotlib opencv-python
 ```
