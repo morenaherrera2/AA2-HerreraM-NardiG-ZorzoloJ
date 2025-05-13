@@ -93,7 +93,7 @@ Ubicación:
 
 ## 📁 Estructura del Repositorio
 
-'''
+```
 Problema 1-TP1 AA2.ipynb  # Notebook con la solución del problema 1 - Rendimiento Académico 
 Problema 3-TP1 AA2.ipynb  # Notebook con la solución del problema 3 - Clasificación de Escenas Naturales
 
@@ -105,7 +105,7 @@ scripts_python/
 imágenes/
 ├── ... # Imágenes que muestran el funcionamiento del sistema de clasificación de gestos.
 └── ... # Ejemplos de imágenes procesadas en la clasificación de escenas naturales.
-'''
+```
 
 ## 📝 Instrucciones de Ejecución
 
