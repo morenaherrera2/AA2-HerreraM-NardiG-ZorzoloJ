@@ -17,6 +17,7 @@ import shutil
 import os
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Flatten
+import joblib
 
 #----------------------------------
 # PARTE 3 - rock_paper_scissors
@@ -127,7 +128,7 @@ def mostrar_imagenes_nuevas(y_pred, file_test, class_names, output_dir):
     plt.tight_layout()
     plt.show()
 
-# Función principal
+"""# Función principal
 def main():
     model_path = 'modelo_gestos_rps.h5'  # Ruta del modelo
     model = tf.keras.models.load_model(model_path)
@@ -158,5 +159,88 @@ def main():
 
     # Mostramos las imágenes capturadas con sus predicciones
     mostrar_imagenes_nuevas(y_pred, file_names, class_names, output_dir)
+
+main()
+
+"""
+
+# NUEVA FUNCIÓN PARA PREDICCIÓN EN TIEMPO REAL
+
+def predecir_en_tiempo_real(model_path, class_names):
+    model = tf.keras.models.load_model(model_path)
+    scaler = joblib.load('scaler.pkl') 
+
+    cap, hands, mp_hands, mp_drawing = configurar_camara()
+
+    print("Mostrá un gesto con la mano para ver la predicción en tiempo real.")
+    print("Presioná 'e' para salir.")
+
+    while cap.isOpened():
+        ret, frame = cap.read()
+        if not ret:
+            break
+
+        frame = cv2.flip(frame, 1)
+        rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        resultado = hands.process(rgb_frame)
+
+        if resultado.multi_hand_landmarks:
+            hand_landmarks = resultado.multi_hand_landmarks[0]
+            mp_drawing.draw_landmarks(frame, hand_landmarks, mp_hands.HAND_CONNECTIONS)
+
+            landmarks = [(lm.x, lm.y) for lm in hand_landmarks.landmark]
+            flat_landmarks = np.array(landmarks).flatten().reshape(1, -1)
+
+            # Escalamos los landmarks (usamos el scaler del entrenamiento)
+            flat_landmarks_scaled = scaler.transform(flat_landmarks)
+
+            prediction = model.predict(flat_landmarks_scaled)
+            class_index = np.argmax(prediction)
+            predicted_label = class_names[class_index]
+
+            # Mostramos la predicción en la imagen
+            cv2.putText(frame, f"Gesto: {predicted_label}", (10, 40),
+                        cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 3)
+
+        cv2.imshow("Predicción en Tiempo Real", frame)
+
+        if cv2.waitKey(1) & 0xFF == ord('e'):
+            break
+
+    cap.release()
+    cv2.destroyAllWindows()
+
+
+# FUNCIÓN PRINCIPAL
+
+def main():
+    model_path = 'modelo_gestos_rps.h5'
+    class_names = ['piedra', 'papel', 'tijeras']
+
+    modo_prediccion_tiempo_real = True  # Cambiamos esto a False para usar el modo anterior con tecla 'c'
+
+    if modo_prediccion_tiempo_real:
+        predecir_en_tiempo_real(model_path, class_names)
+    else:
+        output_dir = 'imagenes_prueba'
+        crear_carpeta_limpia(output_dir)
+
+        cap, hands, mp_hands, mp_drawing = configurar_camara()
+        landmarks_array_prueba, file_names = capturar_gestos_nuevos(cap, hands, mp_hands, mp_drawing, output_dir)
+
+        scaler = MinMaxScaler()
+        landmarks_array_prueba = scaler.fit_transform(landmarks_array_prueba)
+
+        model = tf.keras.models.load_model(model_path)
+        y_pred = []
+        for flat_landmarks in landmarks_array_prueba:
+            flat_landmarks = flat_landmarks.reshape(1, -1)
+            prediction = model.predict(flat_landmarks)
+            class_index = np.argmax(prediction)
+            y_pred.append(class_index)
+
+        y_pred = np.array(y_pred)
+        mostrar_imagenes_nuevas(y_pred, file_names, class_names, output_dir)
+
 
 main()

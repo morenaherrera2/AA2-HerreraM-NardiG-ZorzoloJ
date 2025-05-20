@@ -18,7 +18,7 @@ import os
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Flatten
 from sklearn.metrics import classification_report, confusion_matrix
-
+import joblib 
 #----------------------------------
 # PARTE 2 - train_gesture_classifier
 #----------------------------------
@@ -30,6 +30,8 @@ def cargar_dataset(dataset_path, labels_path, filenames_path):
     file_names = np.load(filenames_path)
     scaler = MinMaxScaler()
     X_scaled = scaler.fit_transform(X)
+    # Guardar scaler
+    joblib.dump(scaler, 'scaler.pkl')
     return X_scaled, y, file_names
 
 # Función para dividir los datos en entrenamiento y prueba
